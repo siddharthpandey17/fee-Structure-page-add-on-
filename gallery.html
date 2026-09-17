@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gallery — Gaurav Coaching Institute</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;600;700&family=Mulish:wght@400;500;600&family=Fira+Code:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#2E1A47;
+    --gold:#E07A3F;
+    --cream:#FBF8F4;
+    --teal:#6B4E8A;
+    --ink:#1C1420;
+    --cream-soft:#EDE2F2;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Mulish',sans-serif;background:var(--cream);color:var(--ink);line-height:1.6;}
+  h1,h2,h3{font-family:'Zilla Slab',serif;color:var(--navy);line-height:1.15;}
+  .mono{font-family:'Fira Code',monospace;letter-spacing:0.03em;}
+  a{text-decoration:none;color:inherit;}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px;}
+
+  @keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+
+  header{background:var(--navy);padding:18px 0;position:sticky;top:0;z-index:50;}
+  header .wrap{display:flex;justify-content:space-between;align-items:center;}
+  header .wrap{position:relative;}
+  .menu-toggle{display:none;background:none;border:none;cursor:pointer;padding:6px;flex-direction:column;gap:5px;z-index:60;}
+  .menu-toggle span{display:block;width:24px;height:2px;background:var(--cream);transition:transform 0.2s ease, opacity 0.2s ease;}
+  .menu-toggle.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+  .menu-toggle.open span:nth-child(2){opacity:0;}
+  .menu-toggle.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+  nav a.active-link{color:var(--gold);}
+
+  .field-error{border-color:#C0392B !important;box-shadow:0 0 0 3px rgba(192,57,43,0.12) !important;}
+  .field-error-msg{color:#C0392B;font-size:0.78rem;margin-top:-10px;margin-bottom:14px;}
+  .form-message{padding:12px 16px;border-radius:4px;font-size:0.88rem;margin-bottom:20px;}
+  .form-message.success{background:#E7F3E8;color:#2E7D32;border:1px solid #B7DDB9;}
+  .logo{color:var(--cream);font-family:'Zilla Slab',serif;font-size:1.3rem;font-weight:700;}
+  .logo span{color:var(--gold);}
+  nav a{color:var(--cream-soft);margin-left:26px;font-size:0.9rem;font-weight:500;}
+  nav a:hover{color:var(--gold);}
+  nav a.btn-nav{background:var(--gold);color:#fff;padding:9px 18px;border-radius:2px;font-weight:700;}
+
+  .page-hero{background:var(--navy);color:var(--cream);padding:64px 0 72px;text-align:center;position:relative;overflow:hidden;}
+  .page-hero::after{
+    content:"";position:absolute;right:-60px;top:-60px;
+    width:260px;height:260px;border:1px solid rgba(224,122,63,0.3);border-radius:50%;
+  }
+  .page-hero .eyebrow{
+    font-family:'Fira Code',monospace;color:var(--gold);font-size:0.78rem;
+    letter-spacing:0.12em;text-transform:uppercase;margin-bottom:14px;display:block;
+    opacity:0;animation:fadeUp 0.7s ease forwards;animation-delay:0.05s;
+  }
+  .page-hero h1{
+    color:var(--cream);font-size:clamp(2rem,4.5vw,2.8rem);
+    opacity:0;animation:fadeUp 0.7s ease forwards;animation-delay:0.18s;
+  }
+  .page-hero p{
+    color:var(--cream-soft);max-width:520px;margin:16px auto 0;
+    opacity:0;animation:fadeUp 0.7s ease forwards;animation-delay:0.32s;
+  }
+
+  .section{padding:76px 0;}
+  .section-head{max-width:580px;margin-bottom:44px;}
+  .section-head.center{margin:0 auto 44px;text-align:center;}
+  .section-head .eyebrow{color:var(--teal);}
+  .section-head h2{font-size:2rem;}
+  .section-head p{color:#555;margin-top:12px;}
+
+  /* Story */
+  .story{background:#fff;}
+  .story-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;}
+  .story-visual{
+    background:var(--cream-soft);border-radius:6px;height:280px;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Fira Code',monospace;color:var(--navy);font-size:0.85rem;
+    border:1px solid #E5D9EE;
+  }
+  .story-text p{color:#555;margin-bottom:14px;}
+
+  /* Mission/Vision */
+  .mv-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+  .mv-card{
+    background:#fff;border:1px solid #E5D9EE;border-radius:4px;padding:30px;
+    opacity:0;animation:fadeUp 0.6s ease forwards;
+  }
+  .mv-card:nth-child(1){animation-delay:0.05s;}
+  .mv-card:nth-child(2){animation-delay:0.2s;}
+  .mv-card .icon{
+    width:44px;height:44px;border-radius:50%;
+    background:var(--cream-soft);color:var(--gold);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Fira Code',monospace;margin-bottom:16px;font-size:1.1rem;
+  }
+  .mv-card h3{font-size:1.2rem;margin-bottom:10px;}
+  .mv-card p{color:#555;font-size:0.94rem;}
+
+  /* Timeline */
+  .timeline{border-left:2px solid #E5D9EE;padding-left:28px;margin-left:8px;}
+  .timeline-item{position:relative;padding-bottom:32px;}
+  .timeline-item:last-child{padding-bottom:0;}
+  .timeline-item::before{
+    content:"";position:absolute;left:-34px;top:4px;
+    width:12px;height:12px;border-radius:50%;
+    background:var(--gold);border:3px solid var(--cream);
+  }
+  .timeline-item .year{
+    font-family:'Fira Code',monospace;color:var(--teal);
+    font-size:0.78rem;letter-spacing:0.06em;text-transform:uppercase;
+    margin-bottom:6px;display:block;
+  }
+  .timeline-item h3{font-size:1.05rem;margin-bottom:6px;}
+  .timeline-item p{color:#555;font-size:0.92rem;}
+
+  /* Team */
+  .team-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:24px;}
+  .team-card{
+    background:#fff;border:1px solid #E5D9EE;border-radius:4px;padding:28px 22px;text-align:center;
+    transition:border-color 0.15s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    opacity:0;animation:fadeUp 0.6s ease forwards;
+  }
+  .team-card:nth-child(1){animation-delay:0.05s;}
+  .team-card:nth-child(2){animation-delay:0.18s;}
+  .team-card:nth-child(3){animation-delay:0.31s;}
+  .team-card:hover{border-color:var(--gold);transform:translateY(-4px);box-shadow:0 10px 24px rgba(0,0,0,0.07);}
+  .team-avatar{
+    width:64px;height:64px;border-radius:50%;background:var(--teal);color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Fira Code',monospace;font-size:1.2rem;font-weight:600;
+    margin:0 auto 14px;
+  }
+  .team-card h3{font-size:1.05rem;margin-bottom:4px;}
+  .team-card .role{
+    font-family:'Fira Code',monospace;color:var(--gold);font-size:0.75rem;
+    letter-spacing:0.05em;text-transform:uppercase;
+  }
+
+  .cta-band{background:var(--navy);color:var(--cream);text-align:center;padding:64px 24px;}
+  .cta-band h2{color:var(--cream);font-size:1.9rem;}
+  .cta-band p{color:var(--cream-soft);margin:14px 0 30px;}
+  .btn{display:inline-block;padding:14px 28px;border-radius:2px;font-weight:700;font-size:0.95rem;transition:transform 0.15s ease;}
+  .btn-primary{background:var(--gold);color:#fff;}
+  .btn-primary:hover{transform:translateY(-2px);}
+
+  footer{background:var(--ink);color:var(--cream-soft);padding:40px 0 24px;font-size:0.85rem;}
+  .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:32px;margin-bottom:28px;}
+  .footer-grid h4{color:var(--cream);font-size:0.95rem;margin-bottom:12px;font-family:'Mulish',sans-serif;}
+  .footer-grid p{color:var(--cream-soft);font-size:0.85rem;}
+  .footer-grid ul{list-style:none;}
+  .footer-grid li{margin-bottom:8px;}
+  .footer-grid a:hover{color:var(--gold);}
+  .footer-bottom{border-top:1px solid rgba(237,226,242,0.15);padding-top:18px;text-align:center;color:#8a8390;}
+  footer a{color:var(--gold);}
+
+  @media(max-width:720px){
+    .menu-toggle{display:flex;}
+    nav{
+      display:none;position:absolute;top:100%;left:0;right:0;
+      background:var(--navy);flex-direction:column;
+      padding:14px 24px 22px;gap:16px;
+      box-shadow:0 10px 20px rgba(0,0,0,0.15);
+    }
+    nav.nav-open{display:flex;}
+    nav a{margin-left:0;}
+    .footer-grid{grid-template-columns:1fr;}
+    .story-grid,.mv-grid{grid-template-columns:1fr;}
+  }  /* Gallery */
+  .filter-tabs{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:40px;}
+  .filter-tab{
+    font-family:'Fira Code',monospace;font-size:0.8rem;font-weight:500;
+    padding:9px 18px;border-radius:30px;border:1px solid #E5D9EE;
+    background:#fff;color:var(--navy);cursor:pointer;transition:all 0.15s ease;
+  }
+  .filter-tab:hover{border-color:var(--gold);}
+  .filter-tab.active{background:var(--gold);color:#fff;border-color:var(--gold);}
+
+  .gallery-grid{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;
+  }
+  .gallery-item{
+    background:#fff;border:1px solid #E5D9EE;border-radius:8px;overflow:hidden;
+    opacity:0;animation:fadeUp 0.55s ease forwards;
+    transition:transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .gallery-item:hover{transform:translateY(-5px);box-shadow:0 14px 28px rgba(0,0,0,0.08);}
+  .gallery-item .photo{
+    height:190px;background:var(--cream-soft);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Fira Code',monospace;color:var(--teal);font-size:0.8rem;text-align:center;
+  }
+  .gallery-item .caption{padding:16px 18px;}
+  .gallery-item .caption .cat{
+    font-family:'Fira Code',monospace;font-size:0.68rem;color:var(--gold);
+    text-transform:uppercase;letter-spacing:0.06em;display:block;margin-bottom:4px;
+  }
+  .gallery-item .caption h3{font-size:0.98rem;}
+  .gallery-item.hidden{display:none;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="logo">Gaurav <span>Coaching</span></div>
+    <button class="menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <nav>
+      <a href="about.html">About</a>
+      <a href="courses.html">Courses</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="fees.html">Fees</a>
+      <a href="contact.html">Contact</a>
+      <a href="login.html" class="btn-nav">Login</a>
+    </nav>
+  </div>
+</header>
+
+<section class="page-hero">
+  <div class="wrap">
+    <span class="eyebrow">Gallery</span>
+    <h1>Ek jhalak Gaurav Coaching Institute ki</h1>
+    <p>Classroom, batches aur events ki kuch photos — jaaniye kaisa mahaul hai yahan seekhne ka.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="filter-tabs">
+      <button class="filter-tab active" data-filter="all">All</button>
+      <button class="filter-tab" data-filter="classroom">Classroom</button>
+      <button class="filter-tab" data-filter="events">Events</button>
+      <button class="filter-tab" data-filter="students">Students</button>
+    </div>
+
+    <div class="gallery-grid">
+      <div class="gallery-item" data-cat="classroom" style="animation-delay:0.03s;">
+        <div class="photo">Computer Lab Photo</div>
+        <div class="caption"><span class="cat">Classroom</span><h3>Computer Lab</h3></div>
+      </div>
+      <div class="gallery-item" data-cat="classroom" style="animation-delay:0.08s;">
+        <div class="photo">Typing Class Photo</div>
+        <div class="caption"><span class="cat">Classroom</span><h3>Typing Practice Session</h3></div>
+      </div>
+      <div class="gallery-item" data-cat="students" style="animation-delay:0.13s;">
+        <div class="photo">Batch Group Photo</div>
+        <div class="caption"><span class="cat">Students</span><h3>Morning Batch Group</h3></div>
+      </div>
+      <div class="gallery-item" data-cat="events" style="animation-delay:0.18s;">
+        <div class="photo">Certificate Ceremony Photo</div>
+        <div class="caption"><span class="cat">Events</span><h3>Certificate Distribution</h3></div>
+      </div>
+      <div class="gallery-item" data-cat="students" style="animation-delay:0.23s;">
+        <div class="photo">Digital Marketing Batch Photo</div>
+        <div class="caption"><span class="cat">Students</span><h3>Digital Marketing Batch</h3></div>
+      </div>
+      <div class="gallery-item" data-cat="classroom" style="animation-delay:0.28s;">
+        <div class="photo">NIOS Counselling Photo</div>
+        <div class="caption"><span class="cat">Classroom</span><h3>NIOS Counselling Desk</h3></div>
+      </div>
+      <div class="gallery-item" data-cat="events" style="animation-delay:0.33s;">
+        <div class="photo">Institute Anniversary Photo</div>
+        <div class="caption"><span class="cat">Events</span><h3>Institute Anniversary</h3></div>
+      </div>
+      <div class="gallery-item" data-cat="students" style="animation-delay:0.38s;">
+        <div class="photo">Evening Batch Photo</div>
+        <div class="caption"><span class="cat">Students</span><h3>Evening Batch Group</h3></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-band">
+  <h2>Khud aake dekhna chahte ho?</h2>
+  <p>Visit karein ya admission ke liye registration form bharein.</p>
+  <a href="register.html" class="btn btn-primary">Registration Form Bharein</a>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <h4>Gaurav Coaching Institute</h4>
+        <p>Computer courses, NIOS admission counselling aur digital marketing training — Kanpur, Uttar Pradesh.</p>
+      </div>
+      <div>
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="courses.html">Courses</a></li>
+          <li><a href="gallery.html">Gallery</a></li>
+          <li><a href="fees.html">Fees</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Account</h4>
+        <ul>
+          <li><a href="login.html">Login</a></li>
+          <li><a href="signup.html">Sign Up</a></li>
+          <li><a href="register.html">Registration Form</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      © 2026 Gaurav Coaching Institute. All rights reserved.
+    </div>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var tabs = document.querySelectorAll('.filter-tab');
+  var items = document.querySelectorAll('.gallery-item');
+  tabs.forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      tabs.forEach(function (t) { t.classList.remove('active'); });
+      tab.classList.add('active');
+      var filter = tab.dataset.filter;
+      items.forEach(function (item) {
+        if (filter === 'all' || item.dataset.cat === filter) {
+          item.classList.remove('hidden');
+        } else {
+          item.classList.add('hidden');
+        }
+      });
+    });
+  });
+});
+</script>
+</body>
+</html>
